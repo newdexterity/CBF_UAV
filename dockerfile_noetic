@@ -1,8 +1,9 @@
 from ros:noetic-ros-core
 
+# Match the user ID, group ID and username to your host system user, as it makes file permissions simple.
 ARG uid="1000"
 ARG gid="1000"
-ARG username="angus"
+ARG username="YOURUSERNAME"
 
 ARG dialoutid="20"
 
