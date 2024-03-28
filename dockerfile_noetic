@@ -1,0 +1,59 @@
+from ros:noetic-ros-core
+
+ARG uid="1000"
+ARG gid="1000"
+ARG username="angus"
+
+ARG dialoutid="20"
+
+# Creating user and group into the container and adding it to the sudoers
+RUN useradd -u $uid -ms /bin/bash $username
+RUN groupmod -g $gid $username
+RUN echo $username:$username | chpasswd
+RUN echo $username 'ALL=(ALL) ALL' >> /etc/sudoers
+
+RUN groupmod -g $dialoutid dialout
+RUN usermod -a -G dialout $username
+
+# Setting container starting directory
+WORKDIR /home/$username
+
+ENV DISPLAY=:0
+ENV LD_LIBRARY_PATH=/opt/vc/lib
+ENV READTHEDOCS=true
+
+EXPOSE 2319
+EXPOSE 1883
+
+# install packages that are needed
+RUN apt update --ignore-missing && DEBIAN_FRONTEND=noninteractive apt install --ignore-missing -y \
+    python3-pip \
+    python3-opencv \
+    build-essential \
+    libyaml-dev \
+    python3-yaml \
+    python3-ply \
+    python3-jinja2 \
+    git \
+    cu \
+    terminator \
+    libopenblas-dev \
+    libgnutls28-dev \
+    ros-noetic-rviz \
+    ros-noetic-tf2 \
+    ros-noetic-tf2-py \
+    ros-noetic-tf2-geometry-msgs \
+    && rm -rf /var/lib/apt/lists/*
+    
+RUN python3 -m pip install picamera2
+RUN python3 -m pip install numpy==1.24.0
+RUN python3 -m pip install cvxpy
+RUN python3 -m pip install paho-mqtt
+RUN python3 -m pip install pyserial
+RUN python3 -m pip install pymavlink
+
+#FROM python:3
+
+#RUN pip install --no-cache-dir --upgrade pip && \
+#    pip install --no-cache-dir numpy
+

@@ -1,0 +1,8 @@
+<launch>
+	<node name="position_estimator" pkg="visual_servo_drone" type="position_estimator.py" output="screen" />
+	<node name="cbf_filter" pkg="visual_servo_drone" type="cbf_filter.py" output="screen" />
+	<node name="aruco_interface" pkg="visual_servo_drone" type="aruco_interface.py" output="screen" />
+	<node name="velocity_planner" pkg="visual_servo_drone" type="velocity_planner.py" output="screen" />
+	<node name="mavlink_interface" pkg="visual_servo_drone" type="mavlink_interface.py" output="screen" />
+	<node name="logger" pkg="visual_servo_drone" type="logger.py" output="screen" />
+</launch>
